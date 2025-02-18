@@ -18,8 +18,6 @@ const banner = `
 
 console.log(banner);
 
-// ... rest of the code remains exactly the same ...
-
 // Read proxies from proxies.txt
 const proxies = fs.readFileSync('proxies.txt', 'utf-8').split('\n').filter(Boolean);
 
@@ -60,7 +58,7 @@ async function loginOrRegister(walletAddress, signature, referralLink) {
         }, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${signature}` // Change to "Bearer" if needed
+                'Authorization': `Bearer ${signature}`
             }
         });
         await delay(5000); // 5-second delay after login/register
@@ -76,7 +74,7 @@ async function getAllTasks(token) {
     try {
         const response = await axios.get('https://app.gamerboom.org/api/social/social-reward-rules/?seasonId=7&size=15', {
             headers: {
-                'Authorization': `Bearer ${token}` // Change to "Bearer" if needed
+                'Authorization': `Bearer ${token}`
             }
         });
         await delay(3000); // 3-second delay after fetching tasks
@@ -110,15 +108,14 @@ async function runAccount(privateKey, proxy, referralLink) {
     }
 }
 
-// Generate private keys for each proxy
-const privateKeys = proxies.map(() => generateRandomPrivateKey());
-
-// Infinite loop
+// Infinite loop: each iteration creates a new account using a new private key,
+// while reusing the proxies in order.
 (async () => {
-    while (true) { // Infinite loop
-        for (let i = 0; i < privateKeys.length; i++) {
+    while (true) {
+        for (let i = 0; i < proxies.length; i++) {
             console.log(`============================================================`.yellow);
-            await runAccount(privateKeys[i], proxies[i], referralLink);
+            const newPrivateKey = generateRandomPrivateKey(); // Generate a new private key for each account
+            await runAccount(newPrivateKey, proxies[i], referralLink);
             await delay(10000); // 10-second delay before running the next account
         }
         console.log('✔ All accounts have been processed!'.green);
