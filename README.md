@@ -1,4 +1,8 @@
 Gamerboom Auto Reffer Script
+This script can help you with auto refer for gamerboom airdrop.
+
+Join me at telegram for more scripts and updates
+Telegram:https://t.me/scriptcenter1
 ```
 git clone https://github.com/falconthehunter/Gamerboom-Auto-referral.git
 ```
